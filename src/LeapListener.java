@@ -1,6 +1,10 @@
 import com.leapmotion.leap.*;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class LeapListener extends Listener {
+	//declare objects
+	NetworkTable SmartDashboard;
+	
 	//declare constants
 	private final double RAD_TO_DEG = 180 / Math.PI;
 	
@@ -10,7 +14,29 @@ public class LeapListener extends Listener {
 	
 	@Override
 	public void onConnect(Controller controller) {
-		System.out.println("connected");
+		//print out status of Leap Motion connection
+		System.out.println("[Leap Motion] Connected: " + controller.isConnected());
+		
+		//set computer as NetworkTables client
+		System.out.println("[NetworkTables] Setting Client mode");
+		NetworkTable.setClientMode();
+		
+		//set IP address to mDNS address
+		System.out.println("[NetworkTables] Setting IP address");
+		NetworkTable.setIPAddress("roborio-2823-frc.local");
+		
+		//try to initialize NetworkTable while ignoring any errors
+		System.out.println("[NetworkTables] Initializing...");
+		NetworkTable.initialize();
+		
+		//attempt to connect to SmartDashboard NetworkTable
+		System.out.println("[NetworkTables] Getting SmartDashboard table...");
+		NetworkTable SmartDashboard = NetworkTable.getTable("SmartDashboard");
+		
+		//print out status of SmartDashboard connection
+		System.out.println("[SmartDashboard] Connected: " + SmartDashboard.isConnected());
+		
+		System.out.println("[NetworkTables] Setup complete (but SmartDashboard may be unavailable)");
 	}
 	
 	@Override
@@ -56,6 +82,8 @@ public class LeapListener extends Listener {
 			}
 		}
 		
+		//put output to SmartDashboard
 		System.out.println(output[0] + " " + output[1]);
+		
 	}
 }
