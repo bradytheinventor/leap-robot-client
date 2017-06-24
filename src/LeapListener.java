@@ -4,8 +4,9 @@ public class LeapListener extends Listener {
 	//declare constants
 	private final double RAD_TO_DEG = 180 / Math.PI;
 	
+	private final double MIN_Z = 15.0;
+	private final double MAX_Z = 125.0;
 	private final double MIN_PITCH = 10.0;
-	private final double MAX_PITCH = 30.0;
 	
 	@Override
 	public void onConnect(Controller controller) {
@@ -14,7 +15,6 @@ public class LeapListener extends Listener {
 	
 	@Override
 	public void onFrame(Controller controller) {
-		System.out.println("frame");
 		Frame frame = controller.frame();
 		double[] output = {0.0, 0.0};
 		
@@ -25,19 +25,26 @@ public class LeapListener extends Listener {
 		for(int h = 0; h < frame.hands().count(); h++) {
 			String s = frame.hands().get(h).isLeft() ? "left" : "right";
 			Vector d = frame.hands().get(h).direction();
+			Vector p = frame.hands().get(h).palmPosition();
 			
 			double pitch = d.pitch() * RAD_TO_DEG;
 			//double roll = d.roll() * RAD_TO_DEG;
 			//double yaw = d.yaw() * RAD_TO_DEG;
 			
-			double sign = Math.signum(pitch);
-			output[h] = (pitch - (sign * MIN_PITCH)) / (MAX_PITCH - MIN_PITCH);
+			double x = p.getX();
+			double y = p.getY();
+			double z = p.getZ();
+			
+			double sign = Math.signum(z);
+			output[h] = (z - (sign * MIN_Z)) / (MAX_Z - MIN_Z);
 			output[h] *= -1.0;
 			
 			output[h] = Math.abs(pitch) > MIN_PITCH ? output[h] : 0.0;
-			output[h] = Math.abs(pitch) > MAX_PITCH ? 1.0 : output[h];
+			output[h] = Math.abs(z) > MIN_Z ? output[h] : 0.0;
+			output[h] = Math.abs(z) > MAX_Z ? 1.0 : output[h];
 			
-			System.out.println("hand " + s + ", p: " + pitch);
+			//System.out.println("hand " + s + ", p: " + pitch);
+			System.out.println(" z: " + p.getZ() + " out: " + output[h]);
 		}
 		
 		System.out.println(output[0] + " " + output[1]);
