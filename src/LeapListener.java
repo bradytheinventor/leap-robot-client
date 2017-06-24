@@ -80,10 +80,14 @@ public class LeapListener extends Listener {
 					output[1] = power;
 				}
 			}
+			
+			//print calculated power
+			System.out.println(output[0] + " " + output[1]);
 		}
 		
 		//put output to SmartDashboard
-		System.out.println(output[0] + " " + output[1]);
+		SmartDashboard.putNumber("Left", output[0]);
+		SmartDashboard.putNumber("Right", output[1]);
 		
 	}
 }
