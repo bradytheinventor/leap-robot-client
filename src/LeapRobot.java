@@ -1,6 +1,8 @@
 import com.leapmotion.leap.*;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class LeapRobot {
+	NetworkTable SmartDashboard;
 
 	public static void main(String[] args) {
 		LeapListener listener = new LeapListener();

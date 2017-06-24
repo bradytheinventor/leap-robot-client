@@ -7,5 +7,6 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Users/Brady/Documents/Eclipse/workspace/LeapRobotClient/lib/x64"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Brady/Documents/Eclipse/workspace/LeapRobotClient/lib/NetworkTables-3.1.6-desktop.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
