@@ -31,7 +31,7 @@ public class LeapListener extends Listener {
 		
 		//attempt to connect to SmartDashboard NetworkTable
 		System.out.println("[NetworkTables] Getting SmartDashboard table...");
-		NetworkTable SmartDashboard = NetworkTable.getTable("SmartDashboard");
+		SmartDashboard = NetworkTable.getTable("SmartDashboard");
 		
 		//print out status of SmartDashboard connection
 		System.out.println("[SmartDashboard] Connected: " + SmartDashboard.isConnected());
@@ -82,7 +82,7 @@ public class LeapListener extends Listener {
 			}
 			
 			//print calculated power
-			System.out.println(output[0] + " " + output[1]);
+			//System.out.println(output[0] + " " + output[1]);
 		}
 		
 		//put output to SmartDashboard
