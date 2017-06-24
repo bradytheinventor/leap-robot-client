@@ -22,10 +22,10 @@ public class LeapListener extends Listener {
 			return;
 		}
 		
-		for(int h = 0; h < frame.hands().count(); h++) {
-			String s = frame.hands().get(h).isLeft() ? "left" : "right";
-			Vector d = frame.hands().get(h).direction();
-			Vector p = frame.hands().get(h).palmPosition();
+		for(Hand h : frame.hands()) {
+			String s = h.isLeft() ? "left" : "right";
+			Vector d = h.direction();
+			Vector p = h.palmPosition();
 			
 			double pitch = d.pitch() * RAD_TO_DEG;
 			//double roll = d.roll() * RAD_TO_DEG;
@@ -36,15 +36,21 @@ public class LeapListener extends Listener {
 			double z = p.getZ();
 			
 			double sign = Math.signum(z);
-			output[h] = (z - (sign * MIN_Z)) / (MAX_Z - MIN_Z);
-			output[h] *= -1.0;
+			double power = (z - (sign * MIN_Z)) / (MAX_Z - MIN_Z);
+			power *= -1.0;
 			
-			output[h] = Math.abs(pitch) > MIN_PITCH ? output[h] : 0.0;
-			output[h] = Math.abs(z) > MIN_Z ? output[h] : 0.0;
-			output[h] = Math.abs(z) > MAX_Z ? 1.0 : output[h];
+			power = Math.abs(pitch) > MIN_PITCH ? power : 0.0;
+			power = Math.abs(z) > MIN_Z ? power : 0.0;
+			power = Math.abs(z) > MAX_Z ? 1.0 : power;
+			
+			if(h.isLeft()) {
+				output[0] = power;
+			} else {
+				output[1] = power;
+			}
 			
 			//System.out.println("hand " + s + ", p: " + pitch);
-			System.out.println(" z: " + p.getZ() + " out: " + output[h]);
+			System.out.println(" z: " + p.getZ() + " out: " + power);
 		}
 		
 		System.out.println(output[0] + " " + output[1]);
