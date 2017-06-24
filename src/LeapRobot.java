@@ -1,3 +1,4 @@
+import java.util.Scanner;
 import com.leapmotion.leap.*;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
@@ -5,6 +6,7 @@ public class LeapRobot {
 	NetworkTable SmartDashboard;
 
 	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
 		LeapListener listener = new LeapListener();
 		Controller controller = new Controller();
 		
@@ -13,7 +15,7 @@ public class LeapRobot {
 		System.out.print("Press ENTER to connect to robot");
 		
 		try {
-			System.in.read();
+			scan.nextLine();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -39,14 +41,15 @@ public class LeapRobot {
 		
 		System.out.println("[NetworkTables] Setup complete (but SmartDashboard may be unavailable)");
 		
-		System.out.println("Press ENTER to quit");
+		System.out.print("Press ENTER to quit");
 		
 		try {
-			System.in.read();
+			scan.nextLine();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 		
 		controller.removeListener(listener);
+		scan.close();
 	}
 }
