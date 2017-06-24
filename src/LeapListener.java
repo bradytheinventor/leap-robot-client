@@ -15,32 +15,42 @@ public class LeapListener extends Listener {
 	
 	@Override
 	public void onFrame(Controller controller) {
+		//capture frame
 		Frame frame = controller.frame();
+		
+		//reset motor outputs to 0.0
 		double[] output = {0.0, 0.0};
 		
+		//forego calculation if no hands are visible
 		if(frame.hands().count() < 1) {
 			return;
 		}
 		
 		for(Hand h : frame.hands()) {
+			//capture hand position
 			Vector d = h.direction();
 			Vector p = h.palmPosition();
 			
+			//calculate hand position
 			double pitch = d.pitch() * RAD_TO_DEG;
 			double z = p.getZ();
 			
+			//if the hand is level, leave output power at 0.0
 			if(Math.abs(pitch) < MIN_PITCH) {
 				continue;
 			}
 			
+			//if the hand is within the deadband zone, leave output power at 0.0
 			if(Math.abs(z) < MIN_Z) {
 				continue;
 			}
 			
+			//calculate output power based on scaled position
 			double sign = Math.signum(z);
 			double power = -((z - (sign * MIN_Z)) / (MAX_Z - MIN_Z));
 			power = Math.abs(z) > MAX_Z ? 1.0 : power;
 			
+			//determine which side to command
 			if(h.isLeft()) {
 				output[0] = power;
 			} else {
