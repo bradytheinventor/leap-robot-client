@@ -71,7 +71,7 @@ public class LeapListener extends Listener {
 				//calculate output power based on scaled position
 				double sign = Math.signum(z);
 				double power = -((z - (sign * MIN_Z)) / (MAX_Z - MIN_Z));
-				power = Math.abs(z) > MAX_Z ? 1.0 : power;
+				power = Math.abs(z) > MAX_Z ? sign * -1.0 : power;
 				
 				//determine which side to command
 				if(h.isLeft()) {
